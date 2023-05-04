@@ -11,14 +11,15 @@ function SearchSection() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
   const [isOnFocus, setIsOnFocus] = useState(false);
+  const [focusIndex, setFocusIndex] = useState<number>(DEFAULT_INDEX);
   const { recentSearchWords, updateRecentSearchWords } = useRecentSearchWords();
   const [autocompleteWords, setAutocompleteWords] = useState<SearchWordType[]>(
     [],
   );
 
-  const [focusIndex, setFocusIndex] = useState<number>(DEFAULT_INDEX);
-
   const wordBoxRef = useRef<HTMLDivElement>(null);
+
+  const debouncedInputText = useDebounce(inputText);
 
   const onSearch = (searchInputText: string) => {
     if (searchInputText.trim().length === 0) return;
@@ -28,14 +29,12 @@ function SearchSection() {
     if (wordBoxRef.current) wordBoxRef.current.className = 'hidden';
   };
 
-  const debouncedInputText = useDebounce(inputText);
-
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (!isOnFocus) return;
 
       const currentData = autocompleteWords;
-      if (e.key === 'ArrowDown') {
+      if (e.key === 'ArrowDown' && e.isComposing === false) {
         e.preventDefault();
 
         setFocusIndex((currentIndex) =>
@@ -57,7 +56,7 @@ function SearchSection() {
         setIsOnFocus(false);
       }
     },
-    [autocompleteWords, focusIndex],
+    [autocompleteWords, focusIndex, isOnFocus],
   );
 
   useEffect(() => {
@@ -72,6 +71,7 @@ function SearchSection() {
       setIsLoading(true);
       const words = await searchAPI(debouncedInputText.trim());
       setIsLoading(false);
+      setFocusIndex(-1);
       setAutocompleteWords(words.slice(0, MAX_DISPLAYED));
     };
 
@@ -93,15 +93,16 @@ function SearchSection() {
       >
         <SearchBar
           inputText={inputText}
-          setInputText={setInputText}
           isOnFocus={isOnFocus}
           onSearch={onSearch}
+          setInputText={setInputText}
         />
 
         <div ref={wordBoxRef} className={isOnFocus ? '' : 'opacity-0'}>
           <SearchWordBox
             isLoading={isLoading}
             inputText={inputText}
+            debouncedInputText={debouncedInputText}
             setInputText={setInputText}
             recentSearchWords={recentSearchWords}
             onSearch={onSearch}

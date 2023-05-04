@@ -24,7 +24,7 @@ function SearchWord({
       <SearchIcon size="16" />
       <span className="text-black">
         {inputText ? <span className="font-bold">{inputText}</span> : null}
-        {word?.slice(inputText?.length)}
+        {word.slice(inputText?.length)}
       </span>
     </button>
   );

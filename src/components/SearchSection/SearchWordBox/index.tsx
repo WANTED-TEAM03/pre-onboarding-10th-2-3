@@ -1,25 +1,26 @@
-import { useState } from 'react';
 import { MAX_DISPLAYED, SUGGESTED_SEARCH_WORDS } from '@/constants/searchWord';
 import SearchWord from './SearchWord';
 
 type SearchWordBoxProps = {
   isLoading: boolean;
   inputText: string;
-  setInputText: React.Dispatch<React.SetStateAction<string>>;
+  debouncedInputText: string;
   recentSearchWords: string[];
-  onSearch: (input: string) => void;
   autocompleteWords: SearchWordType[];
   focusIndex: number;
+  onSearch: (input: string) => void;
+  setInputText: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function SearchWordBox({
   isLoading,
   inputText,
-  setInputText,
+  debouncedInputText,
   recentSearchWords,
-  onSearch,
   autocompleteWords,
   focusIndex,
+  onSearch,
+  setInputText,
 }: SearchWordBoxProps) {
   const clickWord = (word: string) => {
     setInputText(word);
@@ -29,11 +30,13 @@ function SearchWordBox({
   return (
     <div className="absolute mt-1.5 py-6 w-full max-w-[486px] bg-white rounded-[1.2rem] shadow-lg left-[50%] translate-x-[-50%]">
       {inputText ? (
+        // 사용자가 검색어를 입력중일 때
         <>
           <SearchWord
             inputText={inputText}
             word={inputText}
             clickWord={clickWord}
+            isFocused={false}
           />
 
           <div className="px-6 py-1 text-[0.85rem] text-gray-400 leading-none">
@@ -44,11 +47,12 @@ function SearchWordBox({
               검색 중...
             </div>
           ) : autocompleteWords.length ? (
+            // 사용자가 검색중이고 추천 검색어가 있을 때
             <>
               {autocompleteWords.map(({ id, name }, index) => (
                 <SearchWord
                   key={id}
-                  inputText={inputText}
+                  inputText={debouncedInputText}
                   word={name}
                   clickWord={clickWord}
                   isFocused={focusIndex === index}
@@ -56,17 +60,19 @@ function SearchWordBox({
               ))}
             </>
           ) : (
+            // 추천 검색어가 없을 때
             <div className="px-6 py-2 text-gray-300">검색어 없음</div>
           )}
         </>
       ) : (
+        // 검색어 입력중이 아닐 때
         <>
           <div className="pb-6">
             <div className="px-6 text-[0.85rem] text-gray-400 leading-none">
               최근 검색어
             </div>
-
             {recentSearchWords.length ? (
+              // 최근 검색어가 있을 때
               <div className="flex flex-col pt-2">
                 {recentSearchWords
                   .slice(0, MAX_DISPLAYED)
@@ -80,6 +86,7 @@ function SearchWordBox({
                   ))}
               </div>
             ) : (
+              // 최근 검색어가 없을 때
               <div className="px-6  pt-5 text-gray-300">
                 최근 검색어가 없습니다
               </div>

@@ -3,16 +3,16 @@ import DeleteButton from './DeleteButton';
 
 type SearchBarProps = {
   inputText: string;
-  setInputText: React.Dispatch<React.SetStateAction<string>>;
   isOnFocus: boolean;
   onSearch: (input: string) => void;
+  setInputText: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function SearchBar({
   inputText,
-  setInputText,
   isOnFocus,
   onSearch,
+  setInputText,
 }: SearchBarProps) {
   const onInput = (event: React.FormEvent<HTMLInputElement>) => {
     setInputText(event.currentTarget.value);
