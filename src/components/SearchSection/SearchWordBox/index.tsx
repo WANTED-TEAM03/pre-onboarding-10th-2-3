@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MAX_DISPLAYED, SUGGESTED_SEARCH_WORDS } from '@/constants/searchWord';
 import { searchAPI } from '@/services/search';
+import useDebounce from '@/hooks/useDebounce';
 import SearchWord from './SearchWord';
 
 type SearchWordBoxProps = {
@@ -20,6 +21,7 @@ function SearchWordBox({
   const [autocompleteWords, setAutocompleteWords] = useState<
     { id: number; name: string }[]
   >([]);
+  const debouncedInputText = useDebounce(inputText);
 
   const clickWord = (word: string) => {
     setInputText(word);
@@ -28,12 +30,12 @@ function SearchWordBox({
 
   useEffect(() => {
     const fetchAutocompleteWords = async () => {
-      const words = await searchAPI(inputText);
+      const words = await searchAPI(debouncedInputText);
       setAutocompleteWords(words.slice(0, MAX_DISPLAYED));
     };
 
     fetchAutocompleteWords();
-  }, [inputText]);
+  }, [debouncedInputText]);
 
   return (
     <div className="absolute mt-1.5 py-6 w-full max-w-[486px] bg-white rounded-[1.2rem] shadow-lg left-[50%] translate-x-[-50%]">
