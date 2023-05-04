@@ -98,7 +98,7 @@ function SearchSection() {
           setInputText={setInputText}
         />
 
-        <div ref={wordBoxRef} className={isOnFocus ? '' : 'opacity-0'}>
+        <div ref={wordBoxRef} className={isOnFocus ? '' : 'hidden'}>
           <SearchWordBox
             isLoading={isLoading}
             inputText={inputText}
