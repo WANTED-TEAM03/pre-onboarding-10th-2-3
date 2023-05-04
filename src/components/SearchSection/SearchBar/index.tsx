@@ -5,14 +5,14 @@ type SearchBarProps = {
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   isOnFocus: boolean;
-  search: (input: string) => void;
+  onSearch: (input: string) => void;
 };
 
 function SearchBar({
   inputText,
   setInputText,
   isOnFocus,
-  search,
+  onSearch,
 }: SearchBarProps) {
   const onInput = (event: React.FormEvent<HTMLInputElement>) => {
     setInputText(event.currentTarget.value);
@@ -23,7 +23,7 @@ function SearchBar({
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    search(inputText);
+    onSearch(inputText);
   };
 
   return (

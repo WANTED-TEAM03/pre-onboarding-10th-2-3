@@ -1,41 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MAX_DISPLAYED, SUGGESTED_SEARCH_WORDS } from '@/constants/searchWord';
-import { searchAPI } from '@/services/search';
-import useDebounce from '@/hooks/useDebounce';
 import SearchWord from './SearchWord';
 
 type SearchWordBoxProps = {
+  isLoading: boolean;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   recentSearchWords: string[];
-  search: (input: string) => void;
+  onSearch: (input: string) => void;
+  autocompleteWords: SearchWordType[];
+  focusIndex: number;
 };
 
 function SearchWordBox({
+  isLoading,
   inputText,
   setInputText,
   recentSearchWords,
-  search,
+  onSearch,
+  autocompleteWords,
+  focusIndex,
 }: SearchWordBoxProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [autocompleteWords, setAutocompleteWords] = useState<
-    { id: number; name: string }[]
-  >([]);
-  const debouncedInputText = useDebounce(inputText);
-
   const clickWord = (word: string) => {
     setInputText(word);
-    search(word);
+    onSearch(word);
   };
-
-  useEffect(() => {
-    const fetchAutocompleteWords = async () => {
-      const words = await searchAPI(debouncedInputText);
-      setAutocompleteWords(words.slice(0, MAX_DISPLAYED));
-    };
-
-    fetchAutocompleteWords();
-  }, [debouncedInputText]);
 
   return (
     <div className="absolute mt-1.5 py-6 w-full max-w-[486px] bg-white rounded-[1.2rem] shadow-lg left-[50%] translate-x-[-50%]">
@@ -56,12 +45,13 @@ function SearchWordBox({
             </div>
           ) : autocompleteWords.length ? (
             <>
-              {autocompleteWords.map(({ id, name }) => (
+              {autocompleteWords.map(({ id, name }, index) => (
                 <SearchWord
                   key={id}
                   inputText={inputText}
                   word={name}
                   clickWord={clickWord}
+                  isFocused={focusIndex === index}
                 />
               ))}
             </>
@@ -85,6 +75,7 @@ function SearchWordBox({
                       key={word + index}
                       word={word}
                       clickWord={clickWord}
+                      isFocused={focusIndex === index}
                     />
                   ))}
               </div>
