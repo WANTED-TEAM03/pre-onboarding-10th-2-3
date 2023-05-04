@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MAX_DISPLAYED, SUGGESTED_SEARCH_WORDS } from '@/constants/searchWord';
+import { searchAPI } from '@/services/search';
 import SearchWord from './SearchWord';
 
 type SearchWordBoxProps = {
@@ -24,6 +25,15 @@ function SearchWordBox({
     setInputText(word);
     search(word);
   };
+
+  useEffect(() => {
+    const fetchAutocompleteWords = async () => {
+      const words = await searchAPI(inputText);
+      setAutocompleteWords(words.slice(0, MAX_DISPLAYED));
+    };
+
+    fetchAutocompleteWords();
+  }, [inputText]);
 
   return (
     <div className="absolute mt-1.5 py-6 w-full max-w-[486px] bg-white rounded-[1.2rem] shadow-lg left-[50%] translate-x-[-50%]">
