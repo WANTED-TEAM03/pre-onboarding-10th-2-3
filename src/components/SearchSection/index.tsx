@@ -1,15 +1,18 @@
 import { useRef, useState } from 'react';
+import useRecentSearchWords from '@/hooks/useRecentSearchWords';
 import SearchBar from './SearchBar';
 import SearchWordBox from './SearchWordBox';
 
 function SearchSection() {
   const [inputText, setInputText] = useState('');
   const [isOnFocus, setIsOnFocus] = useState(false);
-  const [recentSearchWords, setRecentSearchWords] = useState<string[]>([]);
+  const { recentSearchWords, updateRecentSearchWords } = useRecentSearchWords();
 
   const wordBoxRef = useRef<HTMLDivElement>(null);
 
-  const search = (input: string) => {
+  const search = (searchInputText: string) => {
+    updateRecentSearchWords(searchInputText);
+
     setIsOnFocus(false);
     if (wordBoxRef.current) wordBoxRef.current.className = 'hidden';
   };
