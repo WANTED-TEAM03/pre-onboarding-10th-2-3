@@ -3,9 +3,9 @@ import useRecentSearchWords from '@/hooks/useRecentSearchWords';
 import useDebounce from '@/hooks/useDebounce';
 import { searchAPI } from '@/services/search';
 import { MAX_DISPLAYED } from '@/constants/searchWord';
+import { DEFAULT_INDEX } from '@/constants/config';
 import SearchBar from './SearchBar/index';
 import SearchWordBox from './SearchWordBox/index';
-import { DEFAULT_INDEX } from '@/constants/config';
 
 function SearchSection() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
