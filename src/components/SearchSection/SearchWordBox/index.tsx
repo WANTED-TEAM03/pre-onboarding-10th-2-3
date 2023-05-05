@@ -10,6 +10,7 @@ type SearchWordBoxProps = {
   focusIndex: number;
   onSearch: (input: string) => void;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
+  setFocusIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 function SearchWordBox({
@@ -21,6 +22,7 @@ function SearchWordBox({
   focusIndex,
   onSearch,
   setInputText,
+  setFocusIndex,
 }: SearchWordBoxProps) {
   const handleClickWord = (word: string) => {
     setInputText(word);
@@ -37,6 +39,7 @@ function SearchWordBox({
             word={inputText}
             onClick={handleClickWord}
             isFocused={false}
+            setFocusIndex={setFocusIndex}
           />
 
           <div className="px-6 py-1 text-[0.85rem] text-gray-400 leading-none">
@@ -56,6 +59,7 @@ function SearchWordBox({
                   word={name}
                   onClick={handleClickWord}
                   isFocused={focusIndex === index}
+                  setFocusIndex={setFocusIndex}
                 />
               ))}
             </>
@@ -82,6 +86,7 @@ function SearchWordBox({
                       word={word}
                       onClick={handleClickWord}
                       isFocused={focusIndex === index}
+                      setFocusIndex={setFocusIndex}
                     />
                   ))}
               </div>

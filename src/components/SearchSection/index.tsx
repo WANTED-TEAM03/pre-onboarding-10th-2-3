@@ -45,7 +45,7 @@ function SearchSection() {
   useEffect(() => {
     const fetchAutocompleteWords = async () => {
       setIsLoading(true);
-      const words = await searchAPI(debouncedInputText.trim());
+      const words = await searchAPI(debouncedInputText.trim().toLowerCase());
       setIsLoading(false);
       setFocusIndex(DEFAULT_INDEX);
       setAutocompleteWords(words.slice(0, MAX_DISPLAYED));
@@ -84,6 +84,7 @@ function SearchSection() {
             onSearch={handleSearch}
             autocompleteWords={autocompleteWords}
             focusIndex={focusIndex}
+            setFocusIndex={setFocusIndex}
           />
         </div>
       </div>
