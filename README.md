@@ -38,8 +38,6 @@
 - [📚 사용한 라이브러리](#사용한-라이브러리)
 - [📂 프로젝트 구조](#프로젝트-구조)
 - [🕹️ 프로젝트 실행 방법](#프로젝트-실행-방법)
-- [📌 컨벤션](#컨벤션)
-  - [Commit convention](#commit-convention)
 - [🎯 과제 수행 내용](#과제-수행-내용)
   - [요약](#요약)
   - [질환명 검색시 API 호출 통해서 검색어 추천 기능 구현](#질환명-검색시-api-호출-통해서-검색어-추천-기능-구현)
@@ -64,12 +62,13 @@
 
 ## 배포 링크
 
-- [API 호출시 CORS 오류]
-- 배포 환경에서는 proxy 설정이 제대로 적용되지 않아 CORS 오류가 발생하고 있습니다.
+https://pre-onboarding-10th-2-3.netlify.app/
 
 <br/>
 
 ## 동작 화면
+
+![demo](https://user-images.githubusercontent.com/83197138/236481089-ca7b19be-dfd7-47ec-b911-9d1d32d3b8e6.gif)
 
 <br/>
 
@@ -124,78 +123,6 @@ $ yarn
 ```bash
 $ yarn dev
 ```
-
-<br/>
-
-## 컨벤션
-
-### Commit convention
-
-```markup
-# <타입> : <제목> 형식으로 작성하며 제목은 최대 50글자 정도로만 입력
-# 제목을 아랫줄에 작성, 제목 끝에 마침표 금지, 무엇을 했는지 명확하게 작성
-```
-
-| 구분     | 내용                                  |
-| -------- | ------------------------------------- |
-| FEAT     | 새로운 기능 추가                      |
-| FIX      | 버그 수정                             |
-| STYLE    | 코드 의미에 영향을 주지 않는 변경사항 |
-| REFACTOR | 코드 리팩토링                         |
-| DOCS     | 문서 수정                             |
-| TEST     | 테스트 코드 추가                      |
-| CHORE    | 빌드 부분 혹은 패키지 매니저 수정사항 |
-
-### Git convention
-
-- 이슈 템플릿
-
-```markdown
----
-name: "Custom issue template \U0001F60A"
-about: 이슈생성시 이 템플릿을 사용해주세요:)
-title: ''
-labels: ''
-assignees: ''
----
-
-## 🐣 만들고자 하는 기능
-
-기능 구현
-
-## 🐣 해당 기능을 구현하기 위해 할 일
-
-- [ ] todo1
-- [ ] todo2
-
-## 🐣 해당 기능에서 신경 쓸 부분
-
-## 🐣 예상기간
-
-0월00일 ~ 0월00일
-```
-
-- PR 템플릿
-
-```markdown
-## 🐣 개요
-
-## 🐣 작업사항
-
--
-
-## 🐣 공유사항
-
--
-```
-
-### 네이밍 컨벤션
-
-- 컴포넌트 함수 선언은 export default function으로 시작해야 합니다.
-- 페이지 컴포넌트의 함수명은 Page로 끝나야 합니다.
-- 함수 네이밍은 handle로 시작해야 합니다.
-- boolean 타입의 변수명은 is로 시작해야 합니다.
-
 <br/>
 
 ## 과제 수행 내용
@@ -501,14 +428,14 @@ const useKeyFocus = (...) => {
       if (event.isComposing) return;
 
       if (event.key === KEY_NAME.arrowDown) {
-        ~~setFocusIndex((currentIndex) =>
+          setFocusIndex((currentIndex) =>
           Math.min(currentIndex + 1, searchWords.length - 1),
         );
         return;
       }
 
       if (event.key === KEY_NAME.arrowUp) {
-        ~~setFocusIndex((currentIndex) => Math.max(-1, currentIndex - 1));
+        setFocusIndex((currentIndex) => Math.max(-1, currentIndex - 1));
         return;
       }
 
