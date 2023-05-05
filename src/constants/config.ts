@@ -1,4 +1,5 @@
-export const BASE_URL = '/api/v1';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+export const BASE_URL = `${PROXY}/api/v1`;
 export const API_URLS = { search: '/search-conditions/' };
 
 export const DEFAULT_INDEX = -1;
