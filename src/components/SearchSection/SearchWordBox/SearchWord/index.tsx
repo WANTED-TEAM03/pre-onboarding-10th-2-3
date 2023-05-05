@@ -3,20 +3,15 @@ import SearchIcon from '@/components/SearchSection/SearchIcon';
 type SearchWordProps = {
   inputText?: string;
   word: string;
-  clickWord: (word: string) => void;
   isFocused: boolean;
+  onClick: (word: string) => void;
 };
 
-function SearchWord({
-  inputText,
-  word,
-  clickWord,
-  isFocused,
-}: SearchWordProps) {
+function SearchWord({ inputText, word, isFocused, onClick }: SearchWordProps) {
   return (
     <button
       type="button"
-      onClick={() => clickWord(word)}
+      onClick={() => onClick(word)}
       className={`flex items-center gap-x-3 px-6 py-2 w-full text-gray-300 hover:bg-gray-50${
         isFocused ? ' bg-gray-50' : ''
       }`}

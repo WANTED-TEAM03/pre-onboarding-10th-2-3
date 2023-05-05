@@ -20,8 +20,8 @@ const useRecentSearchWords = () => {
   };
 
   useEffect(() => {
-    const savedRecent = sessionStorage.getItem(RECENT_SEARCH_WORDS_KEY);
-    if (savedRecent) setRecentSearchWords(JSON.parse(savedRecent));
+    const savedRecentWords = sessionStorage.getItem(RECENT_SEARCH_WORDS_KEY);
+    if (savedRecentWords) setRecentSearchWords(JSON.parse(savedRecentWords));
   }, []);
 
   return { recentSearchWords, updateRecentSearchWords };

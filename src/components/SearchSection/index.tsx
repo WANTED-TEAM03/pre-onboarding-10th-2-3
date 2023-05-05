@@ -1,64 +1,39 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useRecentSearchWords from '@/hooks/useRecentSearchWords';
 import useDebounce from '@/hooks/useDebounce';
 import { searchAPI } from '@/services/search';
 import { MAX_DISPLAYED } from '@/constants/searchWord';
 import { DEFAULT_INDEX } from '@/constants/config';
+import useKeyFocus from '@/hooks/useKeyFocus';
 import SearchBar from './SearchBar/index';
 import SearchWordBox from './SearchWordBox/index';
 
 function SearchSection() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [isOnFocus, setIsOnFocus] = useState(false);
-  const [focusIndex, setFocusIndex] = useState<number>(DEFAULT_INDEX);
-  const { recentSearchWords, updateRecentSearchWords } = useRecentSearchWords();
   const [autocompleteWords, setAutocompleteWords] = useState<SearchWordType[]>(
     [],
   );
-
   const wordBoxRef = useRef<HTMLDivElement>(null);
 
   const debouncedInputText = useDebounce(inputText);
+  const { recentSearchWords, updateRecentSearchWords } = useRecentSearchWords();
 
-  const onSearch = (searchInputText: string) => {
+  const { handleKeyDown, focusIndex, setFocusIndex } = useKeyFocus(
+    autocompleteWords,
+    isOnFocus,
+    setIsOnFocus,
+    setInputText,
+  );
+
+  const handleSearch = (searchInputText: string) => {
     if (searchInputText.trim().length === 0) return;
     updateRecentSearchWords(searchInputText);
 
     setIsOnFocus(false);
     if (wordBoxRef.current) wordBoxRef.current.className = 'hidden';
   };
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!isOnFocus) return;
-      if (e.isComposing) return;
-
-      const currentData = autocompleteWords;
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-
-        setFocusIndex((currentIndex) =>
-          currentIndex === currentData.length - 1
-            ? currentIndex
-            : currentIndex + 1,
-        );
-      }
-
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setFocusIndex((currentIndex) =>
-          currentIndex < 1 ? 0 : currentIndex === -1 ? -1 : currentIndex - 1,
-        );
-      }
-
-      if (e.key === 'Enter') {
-        setInputText(currentData[focusIndex].name);
-        setIsOnFocus(false);
-      }
-    },
-    [autocompleteWords, focusIndex, isOnFocus],
-  );
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -77,7 +52,7 @@ function SearchSection() {
     };
 
     fetchAutocompleteWords();
-  }, [debouncedInputText]);
+  }, [debouncedInputText, setFocusIndex]);
 
   return (
     <section className="flex flex-col justify-center items-center pt-20 pb-40 w-full bg-skyblue">
@@ -95,7 +70,7 @@ function SearchSection() {
         <SearchBar
           inputText={inputText}
           isOnFocus={isOnFocus}
-          onSearch={onSearch}
+          onSearch={handleSearch}
           setInputText={setInputText}
         />
 
@@ -106,7 +81,7 @@ function SearchSection() {
             debouncedInputText={debouncedInputText}
             setInputText={setInputText}
             recentSearchWords={recentSearchWords}
-            onSearch={onSearch}
+            onSearch={handleSearch}
             autocompleteWords={autocompleteWords}
             focusIndex={focusIndex}
           />
