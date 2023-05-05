@@ -18,7 +18,9 @@ function SearchWord({ inputText, word, isFocused, onClick }: SearchWordProps) {
     >
       <SearchIcon size="16" />
       <span className="text-black">
-        {inputText ? <span className="font-bold">{inputText}</span> : null}
+        {inputText && (
+          <span className="font-bold">{word.slice(0, inputText.length)}</span>
+        )}
         {word.slice(inputText?.length)}
       </span>
     </button>
