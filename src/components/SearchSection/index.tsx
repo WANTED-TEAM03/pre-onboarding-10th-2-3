@@ -71,7 +71,7 @@ function SearchSection() {
       setIsLoading(true);
       const words = await searchAPI(debouncedInputText.trim());
       setIsLoading(false);
-      setFocusIndex(-1);
+      setFocusIndex(DEFAULT_INDEX);
       setAutocompleteWords(words.slice(0, MAX_DISPLAYED));
     };
 
