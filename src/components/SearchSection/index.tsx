@@ -32,9 +32,10 @@ function SearchSection() {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (!isOnFocus) return;
+      if (e.isComposing) return;
 
       const currentData = autocompleteWords;
-      if (e.key === 'ArrowDown' && e.isComposing === false) {
+      if (e.key === 'ArrowDown') {
         e.preventDefault();
 
         setFocusIndex((currentIndex) =>
