@@ -1,5 +1,5 @@
 import { AxiosError, AxiosRequestConfig } from 'axios';
-import { API_URLS } from '@/constants/config';
+import { API_URLS, DEFAULT_ERROR_MESSAGE } from '@/constants/config';
 import { getCachedResponse, setCacheStorage } from '@/utils/cacheStorage';
 import apiClient from './apiClient';
 
@@ -29,9 +29,9 @@ export const searchAPI = async (name: string) => {
 
     setCacheStorage(API_URLS.search, queryStr, data);
     return data;
-  } catch (e) {
-    const err = e as AxiosError<ErrorResponse>;
-    alert(err.response?.data.message || '알 수 없는 오류가 발생했습니다.');
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    alert(axiosError.response?.data.message || DEFAULT_ERROR_MESSAGE);
     return [];
   }
 };

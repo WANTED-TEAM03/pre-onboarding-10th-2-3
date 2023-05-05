@@ -1,13 +1,13 @@
 type DeleteButtonProps = {
   isOnFocus: boolean;
-  deleteText: () => void;
+  onClick: () => void;
 };
 
-function DeleteButton({ isOnFocus, deleteText }: DeleteButtonProps) {
+function DeleteButton({ isOnFocus, onClick }: DeleteButtonProps) {
   return (
     <button
       type="button"
-      onClick={deleteText}
+      onClick={onClick}
       className={`flex justify-center items-center w-5 h-5 rounded-full bg-gray-300 ${
         isOnFocus ? 'pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}

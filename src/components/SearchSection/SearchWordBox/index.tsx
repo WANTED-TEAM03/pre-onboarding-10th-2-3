@@ -22,7 +22,7 @@ function SearchWordBox({
   onSearch,
   setInputText,
 }: SearchWordBoxProps) {
-  const clickWord = (word: string) => {
+  const handleClickWord = (word: string) => {
     setInputText(word);
     onSearch(word);
   };
@@ -35,7 +35,7 @@ function SearchWordBox({
           <SearchWord
             inputText={inputText}
             word={inputText}
-            clickWord={clickWord}
+            onClick={handleClickWord}
             isFocused={false}
           />
 
@@ -54,7 +54,7 @@ function SearchWordBox({
                   key={id}
                   inputText={debouncedInputText}
                   word={name}
-                  clickWord={clickWord}
+                  onClick={handleClickWord}
                   isFocused={focusIndex === index}
                 />
               ))}
@@ -80,7 +80,7 @@ function SearchWordBox({
                     <SearchWord
                       key={word + index}
                       word={word}
-                      clickWord={clickWord}
+                      onClick={handleClickWord}
                       isFocused={focusIndex === index}
                     />
                   ))}
@@ -102,7 +102,7 @@ function SearchWordBox({
                 <button
                   key={id}
                   type="button"
-                  onClick={() => clickWord(word)}
+                  onClick={() => handleClickWord(word)}
                   className="px-4 py-2.5 bg-lightblue text-blue rounded-full text-[0.9rem] hover:bg-skyblue"
                 >
                   {word}

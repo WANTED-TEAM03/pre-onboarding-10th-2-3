@@ -14,13 +14,13 @@ function SearchBar({
   onSearch,
   setInputText,
 }: SearchBarProps) {
-  const onInput = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
     setInputText(event.currentTarget.value);
   };
 
-  const deleteText = () => setInputText('');
+  const handleClickDeleteButton = () => setInputText('');
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     onSearch(inputText);
@@ -28,7 +28,7 @@ function SearchBar({
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       className={`flex items-center w-full bg-white rounded-full border-2 ${
         isOnFocus ? 'border-blue' : 'border-white'
       }`}
@@ -47,11 +47,14 @@ function SearchBar({
           <input
             type="text"
             className="pl-px pr-1.5 w-full bg-transparent text-lg text-black pointer-events-auto focus:outline-none"
-            onInput={onInput}
+            onInput={handleInput}
             value={inputText}
             spellCheck={false}
           />
-          <DeleteButton isOnFocus={isOnFocus} deleteText={deleteText} />
+          <DeleteButton
+            isOnFocus={isOnFocus}
+            onClick={handleClickDeleteButton}
+          />
         </div>
       </label>
 
