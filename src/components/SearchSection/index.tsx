@@ -84,6 +84,7 @@ function SearchSection() {
             onSearch={handleSearch}
             autocompleteWords={autocompleteWords}
             focusIndex={focusIndex}
+            setFocusIndex={setFocusIndex}
           />
         </div>
       </div>
